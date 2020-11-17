@@ -1,16 +1,39 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+
+import { SpotifyService } from '../../services/spotify.service';
 
 @Component({
-  selector: 'app-artist',
-  templateUrl: './artist.component.html',
-  styles: [
-  ]
+    selector: 'app-artist',
+    templateUrl: './artist.component.html',
+    styles: [],
 })
-export class ArtistComponent implements OnInit {
+export class ArtistComponent {
+    artist: any = {};
+    topTracks: any[] = [];
+    loading: boolean = true;
 
-  constructor() { }
+    constructor(
+        private _router: ActivatedRoute,
+        private _spotify: SpotifyService
+    ) {
+        _router.params.subscribe((params) => {
+            this.getArtist(params.id);
+            this.getTopTracks(params.id);
+        });
+    }
 
-  ngOnInit(): void {
-  }
+    getArtist(id: string) {
+        this._spotify.getArtist(id).subscribe((artist) => {
+            this.artist = artist;
+            this.loading = false;
+        });
+    }
 
+    getTopTracks(id: string) {
+        this._spotify.getTopTracks(id).subscribe((topTracks) => {
+            this.topTracks = topTracks;
+            console.log(this.topTracks);
+        });
+    }
 }
