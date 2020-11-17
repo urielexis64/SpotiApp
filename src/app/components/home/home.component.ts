@@ -1,18 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { SpotifyService } from '../../services/spotify.service';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['home.components.css'],
+    selector: 'app-home',
+    templateUrl: './home.component.html',
+    styleUrls: ['home.components.css'],
 })
 export class HomeComponent {
-  newReleases: any[] = [];
+    newReleases: any[] = [];
 
-  constructor(private spotify: SpotifyService) {
-    spotify.getNewReleases().subscribe((data: any) => {
-      this.newReleases = data.albums.items;
-      console.log(this.newReleases);
-    });
-  }
+    loading: boolean = true;
+
+    constructor(private spotify: SpotifyService) {
+        spotify.getNewReleases().subscribe((data) => {
+            this.newReleases = data;
+            this.loading = false;
+        });
+    }
 }
