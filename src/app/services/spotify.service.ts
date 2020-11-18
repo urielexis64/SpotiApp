@@ -11,7 +11,7 @@ export class SpotifyService {
     constructor(private _http: HttpClient) {}
 
     token =
-        'Bearer BQCFrcYlwKdCO1aa4Q03NCtSh5ASo8hinjR-2nLxHnibweVCJTOCoaV62aimSplAe3AaedMLrtzUGy0jHtE';
+        'Bearer BQBAXlOfQtTx-gZZ_LMt5Bb37QnBhsXE1B1ijmeobwLkZDDqnEYhdcI8XOal6toSfEUxQni8EOXJB_ERqbw';
 
     getQuery(query: string): Observable<any> {
         const URL = `https://api.spotify.com/v1/${query}`;
@@ -24,21 +24,21 @@ export class SpotifyService {
 
     getNewReleases(): Observable<any> {
         return this.getQuery('browse/new-releases?limit=20').pipe(
-            map((data) => data['albums'].items)
+            map((data) => data.albums.items)
         );
     }
 
     getArtists(term: string): Observable<any> {
         return this.getQuery(`search?q=${term}&type=artist&limit=25`).pipe(
-            map((data) => data['artists'].items)
+            map((data) => data.artists.items)
         );
     }
 
-    getArtist(id: string) {
+    getArtist(id: string): Observable<any> {
         return this.getQuery(`artists/${id}`);
     }
 
-    getTopTracks(id: string) {
+    getTopTracks(id: string): Observable<any> {
         return this.getQuery(`artists/${id}/top-tracks?country=us`).pipe(
             map((topTracks) => topTracks.tracks)
         );
